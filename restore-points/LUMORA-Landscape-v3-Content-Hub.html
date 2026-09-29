@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LUMORA Launcher — Mobile Preview</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#07090f;color:#eef2ff;font-family:Arial,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:-30%;background:radial-gradient(circle at 25% 20%,#5b21b655,transparent 30%),radial-gradient(circle at 80% 70%,#06b6d455,transparent 30%);filter:blur(50px);pointer-events:none}
+.app{position:relative;min-height:100vh;display:flex}.side{width:220px;background:#0b0e16dd;border-right:1px solid #ffffff12;padding:20px 14px;position:fixed;top:0;bottom:0;z-index:3}
+.logo{font-size:24px;font-weight:900;letter-spacing:4px;padding:10px 12px 24px}.logo span{color:#7c3aed}
+.nav button{width:100%;border:0;background:transparent;color:#aeb6cc;text-align:left;padding:13px 14px;border-radius:12px;margin:3px 0;font-size:14px}.nav button.active,.nav button:hover{color:#fff;background:#ffffff0d;box-shadow:0 0 18px #7c3aed44}
+.main{margin-left:220px;padding:28px;max-width:1100px;width:100%}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.badge{font-size:12px;color:#aab3c8}.profile{padding:9px 13px;border:1px solid #ffffff15;border-radius:12px;background:#ffffff08}
+h1{font-size:38px;margin:0 0 8px}.sub{color:#aab3c8}.hero{padding:28px;border-radius:22px;background:linear-gradient(135deg,#111522dd,#0b0e16dd);border:1px solid #ffffff12;box-shadow:0 0 45px #7c3aed22;margin-bottom:22px}
+.play{margin-top:22px;padding:14px 28px;border:0;border-radius:13px;color:white;font-weight:800;background:linear-gradient(90deg,#7c3aed,#06b6d4);box-shadow:0 0 28px #7c3aed66}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{padding:20px;border-radius:18px;background:#0d111bdd;border:1px solid #ffffff10}.card h3{margin:0 0 8px}.muted{color:#8993aa;font-size:13px}.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.chip{padding:8px 11px;border-radius:10px;background:#ffffff08;border:1px solid #ffffff10;color:#cbd3e8;font-size:12px}.section{display:none}.section.active{display:block}.list{display:grid;gap:10px}.item{padding:15px;border-radius:14px;background:#0d111b;border:1px solid #ffffff0d;display:flex;justify-content:space-between;align-items:center}.toggle{appearance:none;width:45px;height:24px;background:#303746;border-radius:30px;position:relative}.toggle:checked{background:#7c3aed}.toggle:after{content:"";position:absolute;width:18px;height:18px;top:3px;left:3px;background:#fff;border-radius:50%;transition:.2s}.toggle:checked:after{left:24px}.color{width:42px;height:32px;border:0;background:transparent}.mobilebar{display:none}
+@media(max-width:700px){.side{display:none}.main{margin:0;padding:18px 15px 80px}.grid{grid-template-columns:1fr}.top{margin-bottom:18px}h1{font-size:30px}.mobilebar{display:flex;position:fixed;bottom:10px;left:10px;right:10px;z-index:5;background:#10141ddd;backdrop-filter:blur(12px);border:1px solid #ffffff15;border-radius:18px;padding:7px;justify-content:space-around}.mobilebar button{background:transparent;border:0;color:#aeb6cc;padding:9px;font-size:11px}.mobilebar button.active{color:#fff}.hero{padding:22px}.profile{font-size:11px}}
+
+.content-hub{margin-top:24px;padding:20px;border-radius:20px;background:linear-gradient(135deg,#0d111bdd,#0a0e16dd);border:1px solid #ffffff10;box-shadow:0 0 35px #06b6d412}
+.hub-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:15px}
+.hub-head h2{margin:0 0 5px;font-size:21px}.hub-tabs{display:flex;gap:7px;flex-wrap:wrap}
+.hub-tab{border:1px solid #ffffff10;background:#ffffff06;color:#9fa9c0;padding:7px 10px;border-radius:10px;font-size:11px;cursor:pointer}
+.hub-tab.active,.hub-tab:hover{color:#fff;background:#7c3aed22;border-color:#7c3aed66;box-shadow:0 0 14px #7c3aed25}
+.hub-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.hub-card{position:relative;min-height:138px;padding:14px;border-radius:15px;background:linear-gradient(145deg,#111624,#0b0f18);border:1px solid #ffffff0d;overflow:hidden}
+.hub-card:before{content:"";position:absolute;inset:auto -20% -55% 30%;height:90px;background:radial-gradient(circle,#7c3aed33,transparent 65%);filter:blur(14px)}
+.hub-icon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,#7c3aed,#06b6d4);box-shadow:0 0 20px #7c3aed44;font-weight:900;font-size:14px;margin-bottom:10px}
+.hub-card h3{margin:0 0 4px;font-size:14px}.hub-card p{margin:0;color:#8993aa;font-size:11px;line-height:1.45}
+.hub-meta{display:flex;justify-content:space-between;align-items:center;margin-top:11px;position:relative}
+.hub-tag{font-size:9px;color:#aeb7ca;background:#ffffff08;border:1px solid #ffffff0c;padding:4px 7px;border-radius:8px}
+.hub-action{border:0;background:transparent;color:#dce3f5;font-size:10px;font-weight:700;cursor:pointer}
+.feature-row{display:grid;grid-template-columns:1.45fr .9fr;gap:11px;margin-top:11px}
+.feature{padding:15px;border-radius:15px;background:linear-gradient(110deg,#17132a,#0b1420);border:1px solid #ffffff0d;min-height:100px}
+.feature h3{margin:0 0 5px;font-size:15px}.feature p{margin:0;color:#929cb2;font-size:11px;line-height:1.5}
+.feature .chip{display:inline-block;margin-top:11px}
+@media (max-width:900px) and (orientation:landscape){.hub-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.feature-row{grid-template-columns:1fr}.content-hub{padding:15px}}
+</style>
+
+<style>
+html,body{overflow:hidden}
+@media (max-width:700px) and (orientation:portrait){
+  body:before{display:none}
+  .app{display:none}
+  body:after{content:"↻  Rotate your phone";position:fixed;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;background:#070a12;color:#eef2ff;font-size:24px;font-weight:800}
+}
+@media (orientation:landscape){
+  .side{display:block!important;width:175px!important;position:fixed;left:0;top:0;bottom:0}
+  .main{margin-left:175px!important;padding:16px 20px!important;height:100vh;overflow-y:auto}
+  .mobilebar{display:none!important}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px}
+  .hero{min-height:155px}
+}
+@media (max-width:850px) and (orientation:landscape){
+  .side{width:150px!important}
+  .main{margin-left:150px!important;padding:11px 14px!important}
+  .logo{font-size:19px;padding-bottom:14px}
+  .nav button{font-size:11px;padding:8px}
+  h1{font-size:25px}
+  .hero{min-height:125px;padding:17px}
+  .card{min-height:95px;padding:12px}
+  .card h3{font-size:14px}
+  .muted{font-size:10px}
+  .chip{font-size:10px;padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side"><div class="logo">LUM<span>O</span>RA</div><div class="nav">
+<button class="active" onclick="show('home',this)">⌂ Home</button><button onclick="show('instances',this)">▣ Instances</button><button onclick="show('mods',this)">◈ Mods</button><button onclick="show('servers',this)">◉ Servers</button><button onclick="show('downloads',this)">↓ Downloads</button><button onclick="show('settings',this)">⚙ Settings</button>
+</div></aside>
+<main class="main">
+<div class="top"><div class="badge">MOBILE PREVIEW • LUMORA v0.1</div><div class="profile">Guest Profile</div></div>
+
+<section id="home" class="section active">
+<div class="hero"><h1>LUMORA Launcher</h1><div class="sub">Premium Performance. Limitless Possibilities.</div><button class="play" onclick="alert('Play is a preview button for now.')">PLAY</button></div>
+<div class="grid"><div class="card"><h3>Instances</h3><div class="muted">Manage Minecraft versions and loaders.</div><div class="row"><span class="chip">Vanilla</span><span class="chip">Fabric</span><span class="chip">Forge</span></div></div>
+<div class="card"><h3>Mods & Modpacks</h3><div class="muted">Modrinth and CurseForge integration planned.</div><div class="row"><span class="chip">Modrinth</span><span class="chip">CurseForge</span></div></div>
+<div class="card"><h3>Server Manager</h3><div class="muted">Create and manage Minecraft servers.</div><div class="row"><span class="chip">Paper</span><span class="chip">Spigot</span><span class="chip">Purpur</span></div></div></div>
+
+<div class="content-hub">
+  <div class="hub-head">
+    <div><h2>Discover</h2><div class="muted">Recommended content for your Minecraft setup.</div></div>
+    <div class="hub-tabs">
+      <button class="hub-tab active" onclick="hubFilter('mods',this)">Recommended Mods</button>
+      <button class="hub-tab" onclick="hubFilter('packs',this)">Modpacks</button>
+      <button class="hub-tab" onclick="hubFilter('packs',this)">Resource Packs</button>
+    </div>
+  </div>
+
+  <div class="hub-grid" id="hubGrid">
+    <div class="hub-card" data-type="mods">
+      <div class="hub-icon">S</div><h3>Sodium</h3><p>Performance-focused rendering optimization.</p>
+      <div class="hub-meta"><span class="hub-tag">Performance</span><button class="hub-action" onclick="alert('Preview: open Sodium')">VIEW →</button></div>
+    </div>
+    <div class="hub-card" data-type="mods">
+      <div class="hub-icon">I</div><h3>Iris</h3><p>Shader support designed for modern Minecraft.</p>
+      <div class="hub-meta"><span class="hub-tag">Shaders</span><button class="hub-action" onclick="alert('Preview: open Iris')">VIEW →</button></div>
+    </div>
+    <div class="hub-card" data-type="mods">
+      <div class="hub-icon">F</div><h3>FerriteCore</h3><p>Memory optimization for smoother sessions.</p>
+      <div class="hub-meta"><span class="hub-tag">Optimization</span><button class="hub-action" onclick="alert('Preview: open FerriteCore')">VIEW →</button></div>
+    </div>
+    <div class="hub-card" data-type="mods">
+      <div class="hub-icon">E</div><h3>EMI</h3><p>Browse recipes and items directly in-game.</p>
+      <div class="hub-meta"><span class="hub-tag">Utility</span><button class="hub-action" onclick="alert('Preview: open EMI')">VIEW →</button></div>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature"><h3>✨ Featured Modpack</h3><p>A curated pack slot for LUMORA recommendations. Later this can be powered by Modrinth and CurseForge data, with version and loader compatibility shown automatically.</p><span class="chip">EXPLORE PACKS →</span></div>
+    <div class="feature"><h3>⚡ Quick Discover</h3><p>Search mods, packs, shaders and resource packs from the Home screen.</p><div class="row"><span class="chip">Search</span><span class="chip">Filters</span><span class="chip">Install</span></div></div>
+  </div>
+</div>
+</section>
+
+<section id="instances" class="section"><h1>Instances</h1><p class="sub">Your separate Minecraft installations.</p><div class="list"><div class="item"><div><b>Vanilla 1.21.x</b><div class="muted">Latest • Java</div></div><button class="chip">Launch</button></div><div class="item"><div><b>Fabric Survival</b><div class="muted">Fabric • Mods enabled</div></div><button class="chip">Launch</button></div><div class="item"><div><b>Create Instance</b><div class="muted">Vanilla, Fabric, Forge, NeoForge, Quilt or modpack</div></div><button class="chip">Create</button></div></div></section>
+
+<section id="mods" class="section"><h1>Mods</h1><p class="sub">Browse and manage mods, resource packs and shaders.</p><div class="grid"><div class="card"><h3>Modrinth</h3><div class="muted">Browse, install and update mods and modpacks.</div></div><div class="card"><h3>CurseForge</h3><div class="muted">Support for compatible projects and modpacks.</div></div><div class="card"><h3>Import</h3><div class="muted">Import supported modpack files and instances.</div></div></div></section>
+
+<section id="servers" class="section"><h1>Server Manager</h1><p class="sub">Server creation and management will be added to the functional build.</p><div class="grid"><div class="card"><h3>Software</h3><div class="row"><span class="chip">Vanilla</span><span class="chip">Paper</span><span class="chip">Spigot</span><span class="chip">Purpur</span><span class="chip">Fabric</span><span class="chip">Forge</span><span class="chip">NeoForge</span><span class="chip">Quilt</span></div></div><div class="card"><h3>Controls</h3><div class="muted">Start • Stop • Restart • Console • Backups • Properties</div></div></div></section>
+
+<section id="downloads" class="section"><h1>Downloads</h1><p class="sub">Launcher downloads will appear here.</p><div class="list"><div class="item">Minecraft versions <span class="chip">Planned</span></div><div class="item">Java runtimes <span class="chip">Planned</span></div><div class="item">Loaders & libraries <span class="chip">Planned</span></div></div></section>
+
+<section id="settings" class="section"><h1>Settings</h1><p class="sub">Customize your LUMORA experience.</p><div class="list"><div class="item"><div><b>RGB Aurora effects</b><div class="muted">Glow and animated accent lighting</div></div><input class="toggle" type="checkbox" checked onchange="document.body.style.setProperty('--x',this.checked?'1':'0')"></div><div class="item"><div><b>Accent color</b><div class="muted">Choose your own button color</div></div><input class="color" type="color" value="#7c3aed" onchange="document.documentElement.style.setProperty('--accent',this.value);document.querySelectorAll('.play').forEach(x=>x.style.background=this.value)"></div></div></section>
+</main>
+<nav class="mobilebar"><button class="active" onclick="show('home',this)">Home</button><button onclick="show('instances',this)">Instances</button><button onclick="show('mods',this)">Mods</button><button onclick="show('servers',this)">Servers</button><button onclick="show('settings',this)">Settings</button></nav>
+</div>
+<script>
+function show(id,btn){document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');window.scrollTo(0,0)}
+
+function hubFilter(type,btn){
+  document.querySelectorAll('.hub-tab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#hubGrid .hub-card').forEach(card=>{
+    card.style.display = (type === 'mods' || card.dataset.type === type) ? '' : 'none';
+  });
+}
+</script>
+</body></html>

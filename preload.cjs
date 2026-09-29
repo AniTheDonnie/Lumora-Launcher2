@@ -1,0 +1,30 @@
+
+const { contextBridge, ipcRenderer } = require('electron');
+contextBridge.exposeInMainWorld('lumora',{
+  getPaths:()=>ipcRenderer.invoke('paths'),
+  openDataFolder:()=>ipcRenderer.invoke('open-data-folder'),
+  openPath:p=>ipcRenderer.invoke('open-path',p),
+  openExternal:u=>ipcRenderer.invoke('open-external',u),
+  getSettings:()=>ipcRenderer.invoke('get-settings'),
+  saveSettings:s=>ipcRenderer.invoke('save-settings',s),
+  listInstances:()=>ipcRenderer.invoke('list-instances'),
+  setActiveInstance:id=>ipcRenderer.invoke('set-active-instance',id),
+  createInstance:d=>ipcRenderer.invoke('create-instance',d),
+  checkJava:()=>ipcRenderer.invoke('check-java'),
+  loginMicrosoft:()=>ipcRenderer.invoke('login-microsoft'),
+  installInstance:id=>ipcRenderer.invoke('install-instance',id),
+  launchInstance:id=>ipcRenderer.invoke('launch-instance',id),
+  stopMinecraft:()=>ipcRenderer.invoke('stop-minecraft'),
+  importMrpack:()=>ipcRenderer.invoke('import-mrpack'),
+  listServers:()=>ipcRenderer.invoke('list-servers'),
+  createServer:d=>ipcRenderer.invoke('create-server',d),
+  startServer:id=>ipcRenderer.invoke('start-server',id),
+  stopServer:id=>ipcRenderer.invoke('stop-server',id),
+  searchModrinth:q=>ipcRenderer.invoke('search-modrinth',q),
+  projectVersions:(id,mc,loader)=>ipcRenderer.invoke('project-versions',id,mc,loader),
+  onDeviceCode:(fn)=>ipcRenderer.on('ms-device-code',(_,data)=>fn({channel:'ms-device-code',data})),
+  onLaunchStatus:(fn)=>ipcRenderer.on('launch-status',(_,data)=>fn(data)),
+  onMinecraftLog:(fn)=>ipcRenderer.on('minecraft-log',(_,data)=>fn(data)),
+  onDownloadProgress:(fn)=>ipcRenderer.on('download-progress',(_,data)=>fn(data)),
+  onTaskProgress:(fn)=>ipcRenderer.on('task-progress',(_,data)=>fn(data))
+});

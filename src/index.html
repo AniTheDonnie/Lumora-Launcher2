@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LUMORA Launcher</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#07090f;color:#eef2ff;font-family:Arial,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:-30%;background:radial-gradient(circle at 25% 20%,#5b21b655,transparent 30%),radial-gradient(circle at 80% 70%,#06b6d455,transparent 30%);filter:blur(50px);pointer-events:none}
+.app{position:relative;min-height:100vh;display:flex}.side{width:220px;background:#0b0e16dd;border-right:1px solid #ffffff12;padding:20px 14px;position:fixed;top:0;bottom:0;z-index:3}
+.logo{font-size:24px;font-weight:900;letter-spacing:4px;padding:10px 12px 24px}.logo span{color:#7c3aed}
+.nav button{width:100%;border:0;background:transparent;color:#aeb6cc;text-align:left;padding:13px 14px;border-radius:12px;margin:3px 0;font-size:14px}.nav button.active,.nav button:hover{color:#fff;background:#ffffff0d;box-shadow:0 0 18px #7c3aed44}
+.main{margin-left:220px;padding:28px;max-width:1100px;width:100%}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.badge{font-size:12px;color:#aab3c8}.profile{padding:9px 13px;border:1px solid #ffffff15;border-radius:12px;background:#ffffff08}
+h1{font-size:38px;margin:0 0 8px}.sub{color:#aab3c8}.hero{padding:28px;border-radius:22px;background:linear-gradient(135deg,#111522dd,#0b0e16dd);border:1px solid #ffffff12;box-shadow:0 0 45px #7c3aed22;margin-bottom:22px}
+.play{margin-top:22px;padding:14px 28px;border:0;border-radius:13px;color:white;font-weight:800;background:linear-gradient(90deg,#7c3aed,#06b6d4);box-shadow:0 0 28px #7c3aed66}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{padding:20px;border-radius:18px;background:#0d111bdd;border:1px solid #ffffff10}.card h3{margin:0 0 8px}.muted{color:#8993aa;font-size:13px}.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.chip{padding:8px 11px;border-radius:10px;background:#ffffff08;border:1px solid #ffffff10;color:#cbd3e8;font-size:12px}.section{display:none}.section.active{display:block}.list{display:grid;gap:10px}.item{padding:15px;border-radius:14px;background:#0d111b;border:1px solid #ffffff0d;display:flex;justify-content:space-between;align-items:center}.toggle{appearance:none;width:45px;height:24px;background:#303746;border-radius:30px;position:relative}.toggle:checked{background:#7c3aed}.toggle:after{content:"";position:absolute;width:18px;height:18px;top:3px;left:3px;background:#fff;border-radius:50%;transition:.2s}.toggle:checked:after{left:24px}.color{width:42px;height:32px;border:0;background:transparent}.mobilebar{display:none}
+@media(max-width:700px){.side{display:none}.main{margin:0;padding:18px 15px 80px}.grid{grid-template-columns:1fr}.top{margin-bottom:18px}h1{font-size:30px}.mobilebar{display:flex;position:fixed;bottom:10px;left:10px;right:10px;z-index:5;background:#10141ddd;backdrop-filter:blur(12px);border:1px solid #ffffff15;border-radius:18px;padding:7px;justify-content:space-around}.mobilebar button{background:transparent;border:0;color:#aeb6cc;padding:9px;font-size:11px}.mobilebar button.active{color:#fff}.hero{padding:22px}.profile{font-size:11px}}
+
+.content-hub{margin-top:24px;padding:20px;border-radius:20px;background:linear-gradient(135deg,#0d111bdd,#0a0e16dd);border:1px solid #ffffff10;box-shadow:0 0 35px #06b6d412}
+.hub-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:15px}
+.hub-head h2{margin:0 0 5px;font-size:21px}.hub-tabs{display:flex;gap:7px;flex-wrap:wrap}
+.hub-tab{border:1px solid #ffffff10;background:#ffffff06;color:#9fa9c0;padding:7px 10px;border-radius:10px;font-size:11px;cursor:pointer}
+.hub-tab.active,.hub-tab:hover{color:#fff;background:#7c3aed22;border-color:#7c3aed66;box-shadow:0 0 14px #7c3aed25}
+.hub-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.hub-card{position:relative;min-height:138px;padding:14px;border-radius:15px;background:linear-gradient(145deg,#111624,#0b0f18);border:1px solid #ffffff0d;overflow:hidden}
+.hub-card:before{content:"";position:absolute;inset:auto -20% -55% 30%;height:90px;background:radial-gradient(circle,#7c3aed33,transparent 65%);filter:blur(14px)}
+.hub-icon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,#7c3aed,#06b6d4);box-shadow:0 0 20px #7c3aed44;font-weight:900;font-size:14px;margin-bottom:10px}
+.hub-card h3{margin:0 0 4px;font-size:14px}.hub-card p{margin:0;color:#8993aa;font-size:11px;line-height:1.45}
+.hub-meta{display:flex;justify-content:space-between;align-items:center;margin-top:11px;position:relative}
+.hub-tag{font-size:9px;color:#aeb7ca;background:#ffffff08;border:1px solid #ffffff0c;padding:4px 7px;border-radius:8px}
+.hub-action{border:0;background:transparent;color:#dce3f5;font-size:10px;font-weight:700;cursor:pointer}
+.feature-row{display:grid;grid-template-columns:1.45fr .9fr;gap:11px;margin-top:11px}
+.feature{padding:15px;border-radius:15px;background:linear-gradient(110deg,#17132a,#0b1420);border:1px solid #ffffff0d;min-height:100px}
+.feature h3{margin:0 0 5px;font-size:15px}.feature p{margin:0;color:#929cb2;font-size:11px;line-height:1.5}
+.feature .chip{display:inline-block;margin-top:11px}
+@media (max-width:900px) and (orientation:landscape){.hub-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.feature-row{grid-template-columns:1fr}.content-hub{padding:15px}}
+
+.searchbar{display:flex;gap:10px}.searchbar input,.formgrid input,.formgrid select{flex:1;min-width:0;background:#0b0f18;border:1px solid #ffffff12;color:#eef2ff;border-radius:12px;padding:12px 13px;outline:none}.searchbar input:focus,.formgrid input:focus,.formgrid select:focus{border-color:#7c3aed88;box-shadow:0 0 18px #7c3aed22}.formgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}.primary{background:linear-gradient(90deg,#7c3aed,#06b6d4)!important;color:#fff!important;border-color:transparent!important;box-shadow:0 0 20px #7c3aed33}.status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px #22c55e;margin-right:7px}.danger{color:#ff8f9d!important}.project-title{font-size:14px}.project-meta{font-size:10px;color:#7f8aa2;margin-top:4px}.result-actions{display:flex;gap:7px}.result-actions button{cursor:pointer}@media(max-width:850px){.formgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.formgrid{grid-template-columns:1fr}}
+</style>
+
+<style>
+html,body{overflow:hidden}
+@media (max-width:700px) and (orientation:portrait){
+  body:before{display:none}
+  .app{display:none}
+  body:after{content:"↻  Rotate your phone";position:fixed;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;background:#070a12;color:#eef2ff;font-size:24px;font-weight:800}
+}
+@media (orientation:landscape){
+  .side{display:block!important;width:175px!important;position:fixed;left:0;top:0;bottom:0}
+  .main{margin-left:175px!important;padding:16px 20px!important;height:100vh;overflow-y:auto}
+  .mobilebar{display:none!important}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px}
+  .hero{min-height:155px}
+}
+@media (max-width:850px) and (orientation:landscape){
+  .side{width:150px!important}
+  .main{margin-left:150px!important;padding:11px 14px!important}
+  .logo{font-size:19px;padding-bottom:14px}
+  .nav button{font-size:11px;padding:8px}
+  h1{font-size:25px}
+  .hero{min-height:125px;padding:17px}
+  .card{min-height:95px;padding:12px}
+  .card h3{font-size:14px}
+  .muted{font-size:10px}
+  .chip{font-size:10px;padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side"><div class="logo">LUM<span>O</span>RA</div><div class="nav">
+<button class="active" onclick="show('home',this)">⌂ Home</button><button onclick="show('instances',this)">▣ Instances</button><button onclick="show('mods',this)">◈ Mods</button><button onclick="show('servers',this)">◉ Servers</button><button onclick="show('downloads',this)">↓ Downloads</button><button onclick="show('settings',this)">⚙ Settings</button>
+</div></aside>
+<main class="main">
+<div class="top"><div class="badge">WINDOWS • LUMORA v0.2</div><div class="profile">Guest Profile</div></div>
+
+<section id="home" class="section active">
+<div class="hero"><h1>LUMORA Launcher</h1><div class="sub">Premium Performance. Limitless Possibilities.</div><button class="play" onclick="alert('Play is a preview button for now.')">PLAY</button></div>
+<div id="launchStatus" class="card" style="margin-top:14px"><h3>LUMORA Engine</h3><div class="muted">Ready. Sign in, create an instance, then press PLAY.</div></div>
+<div class="grid"><div class="card"><h3>Instances</h3><div class="muted">Manage Minecraft versions and loaders.</div><div class="row"><span class="chip">Vanilla</span><span class="chip">Fabric</span><span class="chip">Forge</span></div></div>
+<div class="card"><h3>Mods & Modpacks</h3><div class="muted">Modrinth and CurseForge integration planned.</div><div class="row"><span class="chip">Modrinth</span><span class="chip">CurseForge</span></div></div>
+<div class="card"><h3>Server Manager</h3><div class="muted">Create and manage Minecraft servers.</div><div class="row"><span class="chip">Paper</span><span class="chip">Spigot</span><span class="chip">Purpur</span></div></div></div>
+
+<div class="content-hub">
+  <div class="hub-head">
+    <div><h2>Discover</h2><div class="muted">Recommended content for your Minecraft setup.</div></div>
+    <div class="hub-tabs">
+      <button class="hub-tab active" onclick="hubFilter('mods',this)">Recommended Mods</button>
+      <button class="hub-tab" onclick="hubFilter('packs',this)">Modpacks</button>
+      <button class="hub-tab" onclick="hubFilter('packs',this)">Resource Packs</button>
+    </div>
+  </div>
+
+  <div class="hub-grid" id="hubGrid">
+    <div class="hub-card" data-type="mods">
+      <div class="hub-icon">S</div><h3>Sodium</h3><p>Performance-focused rendering optimization.</p>
+      <div class="hub-meta"><span class="hub-tag">Performance</span><button class="hub-action" onclick="alert('Preview: open Sodium')">VIEW →</button></div>
+    </div>
+    <div class="hub-card" data-type="mods">
+      <div class="hub-icon">I</div><h3>Iris</h3><p>Shader support designed for modern Minecraft.</p>
+      <div class="hub-meta"><span class="hub-tag">Shaders</span><button class="hub-action" onclick="alert('Preview: open Iris')">VIEW →</button></div>
+    </div>
+    <div class="hub-card" data-type="mods">
+      <div class="hub-icon">F</div><h3>FerriteCore</h3><p>Memory optimization for smoother sessions.</p>
+      <div class="hub-meta"><span class="hub-tag">Optimization</span><button class="hub-action" onclick="alert('Preview: open FerriteCore')">VIEW →</button></div>
+    </div>
+    <div class="hub-card" data-type="mods">
+      <div class="hub-icon">E</div><h3>EMI</h3><p>Browse recipes and items directly in-game.</p>
+      <div class="hub-meta"><span class="hub-tag">Utility</span><button class="hub-action" onclick="alert('Preview: open EMI')">VIEW →</button></div>
+    </div>
+  </div>
+
+  <div class="feature-row">
+    <div class="feature"><h3>✨ Featured Modpack</h3><p>A curated pack slot for LUMORA recommendations. Later this can be powered by Modrinth and CurseForge data, with version and loader compatibility shown automatically.</p><span class="chip">EXPLORE PACKS →</span></div>
+    <div class="feature"><h3>⚡ Quick Discover</h3><p>Search mods, packs, shaders and resource packs from the Home screen.</p><div class="row"><span class="chip">Search</span><span class="chip">Filters</span><span class="chip">Install</span></div></div>
+  </div>
+</div>
+</section>
+
+<section id="instances" class="section">
+<h1>Instances</h1><p class="sub">Separate Minecraft installations, each with its own settings and files.</p>
+<div class="card">
+<h3>Create Instance</h3>
+<div class="formgrid">
+<input id="instanceName" placeholder="Instance name" value="LUMORA Survival">
+<input id="instanceVersion" placeholder="Minecraft version" value="1.21.8">
+<select id="instanceLoader"><option>Vanilla</option><option>Fabric</option><option>Forge</option><option>NeoForge</option><option>Quilt</option></select>
+<input id="instanceRam" type="number" min="512" step="512" value="4096" placeholder="RAM MB">
+</div>
+<div class="row"><button class="chip primary" onclick="createInstance()">CREATE INSTANCE</button><button class="chip" onclick="installActive()">INSTALL / REPAIR</button><button class="chip" onclick="importMrpack()">IMPORT .MRPACK</button><button class="chip" onclick="openDataFolder()">OPEN LUMORA FOLDER</button></div>
+</div>
+<div id="instanceList" class="list" style="margin-top:14px"></div>
+</section>
+
+<section id="mods" class="section">
+<h1>Mods & Modpacks</h1>
+<p class="sub">Search real Modrinth projects directly from LUMORA.</p>
+<div class="searchbar"><input id="modSearch" placeholder="Search mods, modpacks, shaders..." onkeydown="if(event.key==='Enter')searchModrinth()"><button class="chip primary" onclick="searchModrinth()">SEARCH</button></div>
+<div class="grid" style="margin-top:14px">
+<div class="card"><h3>Modrinth</h3><div class="muted">Live search through the public Modrinth API. Project pages can be opened in your browser.</div></div>
+<div class="card"><h3>CurseForge</h3><div class="muted">Ready for an official API key. LUMORA will never ask for your CurseForge password.</div></div>
+<div class="card"><h3>Import</h3><div class="muted">Import supported modpack/instance files into a selected LUMORA instance.</div></div>
+</div>
+<div id="modResults" class="list" style="margin-top:14px"><div class="item"><div><b>Discover something</b><div class="muted">Search above to load real Modrinth results.</div></div></div></div>
+</section>
+
+<section id="servers" class="section">
+<h1>Server Manager</h1><p class="sub">Create local server profiles and run a server.jar with Java.</p>
+<div class="card">
+<h3>Create Server</h3>
+<div class="formgrid">
+<input id="serverName" placeholder="Server name" value="My LUMORA Server">
+<select id="serverSoftware"><option>Vanilla</option><option>Paper</option><option>Spigot</option><option>Purpur</option><option>Fabric</option><option>Forge</option><option>NeoForge</option><option>Quilt</option></select>
+<input id="serverRam" type="number" min="512" step="512" value="4096" placeholder="RAM MB">
+</div>
+<div class="row"><button class="chip primary" onclick="createServer()">CREATE SERVER</button><button class="chip" onclick="checkJava()">CHECK JAVA</button></div>
+</div>
+<div id="serverList" class="list" style="margin-top:14px"></div>
+</section>
+
+<section id="downloads" class="section">
+<h1>Downloads</h1><p class="sub">Tools and runtime information used by LUMORA.</p>
+<div class="grid">
+<div class="card"><h3>Minecraft Versions</h3><div class="muted">Version metadata/download layer is separated from the UI so it can be connected safely.</div><span class="chip">ARCHITECTURE READY</span></div>
+<div class="card"><h3>Java Runtime</h3><div class="muted" id="javaStatus">Checking Java...</div><button class="chip" onclick="checkJava()">CHECK NOW</button></div>
+<div class="card"><h3>Loaders & Libraries</h3><div class="muted">Fabric, Forge, NeoForge and Quilt adapters are part of the launcher plan.</div><span class="chip">ADAPTERS</span></div>
+</div>
+</section>
+
+<section id="settings" class="section">
+<h1>Settings</h1><p class="sub">Customize LUMORA and manage its local data.</p>
+<div class="list">
+<div class="item"><div><b>RGB Aurora effects</b><div class="muted">Glow and animated accent lighting</div></div><input id="rgbToggle" class="toggle" type="checkbox" checked onchange="saveSettings()"></div>
+<div class="item"><div><b>Accent color</b><div class="muted">Choose your own button color</div></div><input id="accentColor" class="color" type="color" value="#7c3aed" onchange="applyAccent(this.value);saveSettings()"></div>
+<div class="item"><div><b>Data location</b><div class="muted" id="dataLocation">Loading...</div></div><button class="chip" onclick="openDataFolder()">OPEN</button></div>
+<div class="item"><div><b>Restore points</b><div class="muted">Project restore point is included with this build.</div></div><span class="chip">v0.1 UI</span></div>
+</div>
+</section>
+</main>
+<nav class="mobilebar"><button class="active" onclick="show('home',this)">Home</button><button onclick="show('instances',this)">Instances</button><button onclick="show('mods',this)">Mods</button><button onclick="show('servers',this)">Servers</button><button onclick="show('settings',this)">Settings</button></nav>
+</div>
+<script>
+const L = window.lumora;
+
+async function show(id,btn){
+  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button,.mobilebar button').forEach(x=>x.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='instances') loadInstances();
+  if(id==='servers') loadServers();
+  if(id==='settings') loadSettings();
+  if(id==='downloads') checkJava();
+}
+
+function hubFilter(type,btn){
+  document.querySelectorAll('.hub-tab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  if(type==='mods'){ document.querySelectorAll('#hubGrid .hub-card').forEach(card=>card.style.display=''); }
+  else {
+    document.querySelectorAll('#hubGrid .hub-card').forEach(card=>card.style.display='none');
+    document.querySelectorAll('#hubGrid .hub-card').forEach(card=>{
+      if(type==='packs' && card.dataset.type==='mods') card.style.display='';
+    });
+  }
+}
+
+async function createInstance(){
+  const data={name:document.getElementById('instanceName').value,version:document.getElementById('instanceVersion').value,loader:document.getElementById('instanceLoader').value,ramMb:Number(document.getElementById('instanceRam').value)||4096};
+  const result=await L.createInstance(data);
+  if(!result.ok) return alert(result.error);
+  await loadInstances();
+  alert('Instance created: '+result.instance.name);
+}
+
+async function loadInstances(){
+  const list=document.getElementById('instanceList');
+  const items=await L.listInstances();
+  list.innerHTML=items.length?items.map(i=>`<div class="item"><div><b>${esc(i.name)}</b><div class="muted">${esc(i.loader)} • ${esc(i.version)} • ${i.ramMb} MB</div></div><div class="result-actions"><button class="chip" onclick="window.lumoraActive='${i.id}';setStatus('Selected '+esc(i.name))">SELECT</button><button class="chip primary" onclick="window.lumoraActive='${i.id}';launchActive()">PLAY</button><button class="chip" onclick="openPath('${encodeURIComponent(i.path)}')">OPEN</button></div></div>`).join(''):'<div class="item"><div><b>No instances yet</b><div class="muted">Create your first instance above.</div></div></div>';
+}
+
+async function createServer(){
+  const data={name:document.getElementById('serverName').value,software:document.getElementById('serverSoftware').value,ramMb:Number(document.getElementById('serverRam').value)||4096};
+  const result=await L.createServer(data);
+  if(!result.ok) return alert(result.error);
+  await loadServers();
+  alert('Server profile created. Put server.jar in its folder, then use START.');
+}
+
+async function loadServers(){
+  const list=document.getElementById('serverList');
+  const items=await L.listServers();
+  list.innerHTML=items.length?items.map(s=>`<div class="item"><div><b><span class="status-dot"></span>${esc(s.name)}</b><div class="muted">${esc(s.software)} • ${s.ramMb} MB • ${esc(s.path)}</div></div><div class="result-actions"><button class="chip" onclick="openPath('${encodeURIComponent(s.path)}')">FOLDER</button><button class="chip primary" onclick="startServer('${s.id}')">START</button><button class="chip danger" onclick="stopServer('${s.id}')">STOP</button></div></div>`).join(''):'<div class="item"><div><b>No servers yet</b><div class="muted">Create a local server profile above.</div></div></div>';
+}
+
+async function startServer(id){ const r=await L.startServer(id); alert(r.ok?'Server process started.':'Could not start: '+r.error); }
+async function stopServer(id){ const r=await L.stopServer(id); alert(r.ok?'Server stopped.':r.error); }
+
+async function searchModrinth(){
+  const q=document.getElementById('modSearch').value.trim();
+  if(!q)return;
+  const box=document.getElementById('modResults'); box.innerHTML='<div class="item">Searching Modrinth...</div>';
+  const r=await L.searchModrinth(q);
+  if(!r.ok){box.innerHTML='<div class="item"><div><b>Search failed</b><div class="muted">'+esc(r.error)+'</div></div></div>';return;}
+  box.innerHTML=r.hits.map(p=>`<div class="item"><div><b class="project-title">${esc(p.title)}</b><div class="project-meta">${esc(p.description||'No description')} • ${p.downloads.toLocaleString()} downloads</div></div><div class="result-actions"><button class="chip" onclick="L.openExternal('${p.slug?`https://modrinth.com/${p.project_type}/${encodeURIComponent(p.slug)}`:''}')">OPEN</button></div></div>`).join('') || '<div class="item">No projects found.</div>';
+}
+
+async function checkJava(){
+  const r=await L.checkJava();
+  const text=r.ok?('Java detected: '+r.version):'Java not detected. Install Java to run Minecraft/server processes.';
+  const el=document.getElementById('javaStatus'); if(el) el.textContent=text;
+  if(!r.ok) alert(text);
+  return r;
+}
+
+async function openDataFolder(){ await L.openDataFolder(); }
+async function openPath(encoded){ await L.openPath(decodeURIComponent(encoded)); }
+
+async function loadSettings(){
+  const s=await L.getSettings();
+  document.getElementById('rgbToggle').checked=s.rgb!==false;
+  document.getElementById('accentColor').value=s.accent||'#7c3aed';
+  applyAccent(document.getElementById('accentColor').value);
+  const p=await L.getPaths(); document.getElementById('dataLocation').textContent=p.userData;
+}
+async function saveSettings(){
+  await L.saveSettings({rgb:document.getElementById('rgbToggle').checked,accent:document.getElementById('accentColor').value});
+}
+function applyAccent(v){document.documentElement.style.setProperty('--accent',v);document.querySelectorAll('.play').forEach(x=>x.style.background=v);}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+
+loadSettings();
+loadInstances();
+checkJava();
+
+async function loginMicrosoft(){
+  setStatus('Opening Microsoft sign-in…');
+  const handler=(e)=>{
+    if(e.channel==='ms-device-code') setStatus('Microsoft sign-in code: '+JSON.stringify(e.data));
+  };
+  window.lumora.onDeviceCode?.(handler);
+  const r=await L.loginMicrosoft();
+  if(r.ok){setStatus('Signed in as '+r.account.name+' ✓');document.querySelectorAll('button').forEach(b=>{if(b.textContent.includes('MICROSOFT LOGIN'))b.textContent='MICROSOFT ✓';});}
+  else setStatus('Login failed: '+r.error);
+}
+async function installActive(){
+  const items=await L.listInstances(); const s=items.find(x=>x.id===window.lumoraActive);
+  if(!s){setStatus('Create/select an instance first.');return;}
+  setStatus('Installing '+s.name+'… this can download Minecraft files.');
+  const r=await L.installInstance(s.id);
+  setStatus(r.ok?'Installation/launch process started.':'Install failed: '+r.error);
+}
+async function launchActive(){
+  const items=await L.listInstances();
+  let s=items.find(x=>x.id===window.lumoraActive) || items[items.length-1];
+  if(!s){setStatus('Create an instance first.');return;}
+  window.lumoraActive=s.id;
+  setStatus('Starting '+s.name+'…');
+  const r=await L.launchInstance(s.id);
+  if(!r.ok)setStatus('Launch failed: '+r.error);
+}
+async function importMrpack(){
+  const r=await L.importMrpack();
+  if(r.ok){window.lumoraActive=r.instance.id;setStatus('Imported '+(r.instance.pack?.name||r.instance.name)+' ✓');await loadInstances();}
+  else if(!r.canceled)setStatus('Import failed: '+r.error);
+}
+function setStatus(msg){const x=document.getElementById('launchStatus');if(x)x.innerHTML='<h3>LUMORA Engine</h3><div class="muted">'+esc(msg)+'</div>';}
+</script>
+</body></html>

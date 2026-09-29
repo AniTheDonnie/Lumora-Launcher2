@@ -1,0 +1,19 @@
+{
+  "name": "lumora-launcher",
+  "version": "0.3.0",
+  "description": "LUMORA Minecraft Launcher - playable Windows engine build",
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable nsis"
+  },
+  "devDependencies": {
+    "electron": "^38.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "dependencies": {
+    "minecraft-launcher-core": "^3.18.2",
+    "prismarine-auth": "^3.1.1",
+    "adm-zip": "^0.5.16"
+  }
+}
